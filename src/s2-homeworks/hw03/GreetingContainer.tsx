@@ -1,53 +1,98 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
 import Greeting from './Greeting'
-import { UserType } from './HW3'
+import {UserType} from './HW3'
 
 type GreetingContainerPropsType = {
-    users: any // need to fix any
-    addUserCallback: any // need to fix any
+    users: UserType[]
+    addUserCallback: (name: string) => void
 }
 
-export const pureAddUser = (name: any, setError: any, setName: any, addUserCallback: any) => {
-    // если имя пустое - показать ошибку, иначе - добавить юзера и очистить инпут
-}
-
-export const pureOnBlur = (name: any, setError: any) => { // если имя пустое - показать ошибку
-}
-
-export const pureOnEnter = (e: any, addUser: any) => { // если нажата кнопка Enter - добавить
-}
-
-// более простой и понятный для новичков
-// function GreetingContainer(props: GreetingPropsType) {
-
-// более современный и удобный для про :)
-const GreetingContainer: React.FC<GreetingContainerPropsType> = ({
-    users,
-    addUserCallback,
-}) => {
-    // деструктуризация пропсов
-    const [name, setName] = useState<any>('') // need to fix any
-    const [error, setError] = useState<any>('') // need to fix any
-
-    const setNameCallback = (e: any) => { // need to fix any
-        setName('some name') // need to fix
-
-        error && setError('')
+export const pureAddUser = (name: string, setError: (val: string) => void, setName: (val: string) => void, addUserCallback: (name: string) => void) => {
+    if (name.trim() !== '') {
+        addUserCallback(name.trim());
+        setName('')
+    } else {
+        setError('Title is required')
     }
+}
+
+export const pureOnBlur = (name: string, setError: (val: string) => void) => {
+    if (name.trim() === '') {
+        setError('Name is required')
+    }
+}
+
+export const pureOnEnter = (e: KeyboardEvent, addUser: () => void) => {
+    if (e.key === 'Enter') {
+        addUser()
+    }
+}
+
+const GreetingContainer: React.FC<GreetingContainerPropsType> = ({users, addUserCallback}) => {
+    const [name, setName] = useState<string>('')
+    const [error, setError] = useState<string>('')
+
+    // const setNameCallback = (e: ChangeEvent<HTMLInputElement>) => {
+    //     const trimmedName = e.currentTarget.value)
+    //     if (trimmedName) {
+    //         setName(trimmedName)
+    //         setError('')
+    //     } else {
+    //         setName('')
+    //         setError('name is required')
+    //     }
+    // }
+
+    const setNameCallback = (e: ChangeEvent<HTMLInputElement>) => {
+        setName(e.currentTarget.value)
+        if (!e.currentTarget.value.trim()) {
+            setError('name is required')
+        } else {
+            setError('')
+        }
+    }
+
+
+
+    // const addUser = () => {
+    //     addUserCallback(name)
+    //     alert(`Hello ${name} !`)
+    // }
+
+
     const addUser = () => {
-        pureAddUser(name, setError, setName, addUserCallback)
+        const trimmedName = name.trim();
+        if (trimmedName) {
+            addUserCallback(trimmedName)
+            alert(`Hello ${trimmedName} !`)
+            setName('')
+        }
     }
 
     const onBlur = () => {
         pureOnBlur(name, setError)
     }
 
-    const onEnter = (e: any) => {
-        pureOnEnter(e, addUser)
+    // const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    //     if (e.key === 'Enter' && name) {
+    //         addUser()
+    //         setName('')
+    //     }
+    // }
+
+    const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            if (!name.trim()) {
+                setError('error message'); // Установите сообщение об ошибке
+            } else {
+                addUser();
+                setName('');
+            }
+        }
     }
 
-    const totalUsers = 0 // need to fix
-    const lastUserName = 'some name' // need to fix
+    const totalUsers = users.length;
+    const lastUserName = users[users.length - 1]?.name;
 
     return (
         <Greeting

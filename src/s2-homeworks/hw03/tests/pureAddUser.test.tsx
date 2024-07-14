@@ -1,16 +1,16 @@
 import React from 'react'
 import {pureAddUser} from '../GreetingContainer'
 
-let name: string
-const setName = (a: string) => {
+let name: any
+const setName = (a: any) => {
     name = a
 }
-let error: string
-const setError = (a: string) => {
+let error: any
+const setError = (a: any) => {
     error = a
 }
-let added: boolean
-const addUserCallback = (name: string) => {
+let added: any
+const addUserCallback = () => {
     added = true
 }
 
@@ -28,17 +28,16 @@ test('name 1', () => {
     expect(added).toBe(true)
 })
 test('name 2', () => {
-    name = '';
+    name = ''
     pureAddUser(name, setError, setName, addUserCallback)
     expect(name).toBe('')
-    expect(error).toBe('Title is required')
+    expect(error).toBe('Ошибка! Введите имя!')
     expect(added).toBe(false)
 })
-
 test('name 3', () => {
-    name = '    ';
+    name = '    '
     pureAddUser(name, setError, setName, addUserCallback)
     expect(name).toBe('    ')
-    expect(error).toBe('Title is required')
+    expect(error).toBe('Ошибка! Введите имя!')
     expect(added).toBe(false)
 })

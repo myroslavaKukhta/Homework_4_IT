@@ -1,0 +1,33 @@
+.message {
+display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  border: 1px solid #D9D9D9;
+}
+
+.imageAndText {
+  background-color:  #0066CC;
+}
+
+.imageAndText img {
+border-radius: 50%;
+}
+
+.text {
+
+}
+
+.text:after {
+
+}
+
+.name {
+
+}
+
+.messageText {
+  background-color:  #0066CC;
+}
+
+.time {
+}
